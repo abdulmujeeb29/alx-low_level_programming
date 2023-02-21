@@ -1,14 +1,16 @@
-#include <unistd.h>
-#include "holberton.h"
+#include "main.h"
 
 /**
- * _putchar - writes the character c to stdout
- * @c: The character to print
+ * print_alphabet - print the alphabet, in lowercase, followed by a new line
  *
- * Return: On success 1.
- * On error, -1 is returned, and errno is set appropriately.
+ * Return: void
  */
-int _putchar(char c)
+void print_alphabet(void)
 {
-	return (write(1, &c, 1));
+	char c;
+
+	for (c = 'a'; c <= 'z'; c++)
+		_putchar(c);
+
+	_putchar('\n');
 }
