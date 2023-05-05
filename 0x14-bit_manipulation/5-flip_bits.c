@@ -1,11 +1,11 @@
-#include <stddef.h>
+#include "main.h"
 
 /** 
- * flip_bits - count the number of bits needed to change to match @n and @m
- * @n: the first number
- * @m: the second number
+ * flip_bits - count the number of bits needed to change to match @n and @m.
+ * @n: the first number.
+ * @m: the second number.
  *
- * Return: the number of changes needed to match @n and @m
+ * Return: the number of changes needed to match @n and @m.
  */
 unsigned int flip_bits(unsigned long int n, unsigned long int m)
 {
