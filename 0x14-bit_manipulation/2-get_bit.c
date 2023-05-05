@@ -1,9 +1,11 @@
 #include "main.h"
+
 /**
-* get_bit - get a bi value of @n at a given @index
-* @n: the number that has the bit 
-* @index: the index of the bit 
+* get_bit - get a bi value of @n at a given @index.
+* @n: the number that has the bit.
+* @index: the index of the bit.
 *
+* Return: if an error occurs - -1.
 */
 int get_bit(unsigned long int n, unsigned int index)
 {
