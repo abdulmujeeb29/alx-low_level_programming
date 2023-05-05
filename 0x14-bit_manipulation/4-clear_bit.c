@@ -5,10 +5,8 @@
  * @n: A pointer to the bit.
  * @index: The index to set the value at - indices start at 0.
  *
- * Return: If an error occurs - -1.
- *         otherwise - 1.
+ * Return: 1 if success otherwise -1 on fail.
  */
-
 int clear_bit(unsigned long int *n, unsigned int index)
 {
 	if (!n || index >= sizeof(*n) * 8)
