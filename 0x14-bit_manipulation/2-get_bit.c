@@ -1,3 +1,4 @@
+#include "main.h"
 /**
 * get_bit - get a bi value of @n at a given @index
 * @n: the number that has the bit 
