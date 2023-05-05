@@ -1,5 +1,10 @@
 #include "main.h"
 
+
+/**
+ * print_binary - prrint number in base2.
+ * @n: the number to print
+ */
 void print_binary(unsigned long int n)
 {
 	unsigned int bits;
