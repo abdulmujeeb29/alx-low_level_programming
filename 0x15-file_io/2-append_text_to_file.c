@@ -1,40 +1,40 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <fcntl.h>
+#include <string.h>
 #include <unistd.h>
-#include "main.h"
 
 /**
- * append_text_to_file - Appends text to the end of a file.
- * @filename: The name of the file.
- * @text_content: The text content to append.
+ * append_text_to_file - appends @text_content if any to an exist file
+ * @filename: the file name as cstring
+ * @text_content: pointer to the content of the file as cstring
  *
- * Return: 1 on success, -1 on failure.
+ * Return: 1 if file is exists and content is written if any otherwise -1
  */
 int append_text_to_file(const char *filename, char *text_content)
 {
-	if (filename == NULL)
-		return (-1);
+	int fd, state = -1;
 
-	int fd = open(filename, O_WRONLY | O_APPEND);
-	if (fd == -1)
-		return (-1);
+	/* check if no filename return -1 */
+	if (!filename)
+		goto end;
 
-	if (text_content != NULL)
-	{
-		int text_length = 0;
-		while (text_content[text_length] != '\0')
-			text_length++;
+	/*
+	 * opens an exist file to append to it
+	 */
+	fd = open(filename, O_WRONLY | O_APPEND);
+	if (fd < 0)
+		goto end;
 
-		ssize_t write_count = write(fd, text_content, text_length);
-		if (write_count == -1)
-		{
-			close(fd);
-			return (-1);
-		}
-	}
+	/*
+	 * if @text_content not NULL then
+	 * append it as a content to the file
+	 */
+	if (text_content)
+		if (write(fd, text_content, strlen(text_content)) < 0)
+			goto end;
 
+	state = 1;
+end:
 	close(fd);
-	return (1);
+	return (state);
 }
 

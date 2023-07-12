@@ -1,48 +1,51 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "main.h"
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
 
 /**
- * read_textfile - Reads a text file and prints it to the POSIX standard output.
- * @filename: The name of the file to read.
- * @letters: The number of letters to read and print.
+ * read_textfile - read a file and prints it to stdout
+ * @filename: the name of the file
+ * @letters: the number of letters to read from the file and print
  *
- * Return: The actual number of letters read and printed.
+ * Return: the number of letters printed
  */
 ssize_t read_textfile(const char *filename, size_t letters)
 {
-	if (filename == NULL)
-		return (0);
+	char *buffer;
+	ssize_t counter = 0;
+	int fd;
 
-	FILE *file = fopen(filename, "r");
-	if (file == NULL)
-		return (0);
+	/* validate inputs */
+	if (!filename || !letters)
+		goto end;
 
-	char *buffer = malloc(sizeof(char) * (letters + 1));
-	if (buffer == NULL)
+	/* allocate memory for the data */
+	buffer = malloc(letters);
+	if (!buffer)
+		goto end;
+
+	/* open the required file to read */
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+		goto clean;
+
+	/* read file content @letters bytes */
+	counter = read(fd, buffer, letters);
+	if (counter < 0)
 	{
-		fclose(file);
-		return (0);
+		counter = 0;
+		goto close_file;
 	}
 
-	ssize_t read_count = fread(buffer, sizeof(char), letters, file);
-	if (read_count == 0)
-	{
-		free(buffer);
-		fclose(file);
-		return (0);
-	}
-
-	ssize_t write_count = fwrite(buffer, sizeof(char), read_count, stdout);
-	if (write_count != read_count)
-	{
-		free(buffer);
-		fclose(file);
-		return (0);
-	}
-
-	free(buffer);
-	fclose(file);
-	return (write_count);
+	/* write the buffer to the standard out */
+	counter = write(STDOUT_FILENO, buffer, counter);
+	counter = counter > 0 ? counter : 0; /* if failed return 0 */
+close_file:
+	close(fd); /* close the file stream */
+clean:
+	free(buffer); /* free the allocated memory */
+end:
+	return (counter); /* return the amount of data had been written */
 }
 
